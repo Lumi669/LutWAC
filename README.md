@@ -1,2 +1,0 @@
-# wangjinghuan
-Created with CodeSandbox
