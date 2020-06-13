@@ -23,21 +23,67 @@
 
   <body>
     <table id="board"></table>
-    <script>
-      function tableCreate() {
-        var table = document.getElementById("board");
 
+    <script>
+      var table = document.getElementById("board");
+      var cell;
+
+      //cellArray contains all the cells of board(all the td elements of table)
+      var cellArray = [];
+
+      //create an empty table
+      function tableCreate() {
         for (var i = 0; i < 5; i++) {
           var tr = document.createElement("tr");
           for (var j = 0; j < 5; j++) {
-            var td = document.createElement("td");
-            td.appendChild(document.createTextNode(""));
-            tr.appendChild(td);
+            cell = document.createElement("td");
+            var cellId = i.toString() + j.toString();
+            cell.id = cellId;
+            //cell.onclick=addMark;
+
+            cellArray.push(cell);
+            //console.log('cellID:', cell.id);
+            cell.appendChild(document.createTextNode(""));
+            tr.appendChild(cell);
           }
           table.appendChild(tr);
         }
       }
+
       tableCreate();
+
+      //mark appears on the cell when it is clicked.
+      var mark = "";
+      var count = 0;
+      var player;
+
+      function play() {
+        count += 1;
+        if (count % 2 === 1) {
+          player = 1;
+          mark = "O";
+        } else if (count % 2 === 0) {
+          player = 2;
+          mark = "X";
+        }
+        console.log("count:", count);
+      }
+
+      function addMark(clickedId) {
+        play();
+
+        var currentCell = document.getElementById(clickedId);
+        if (currentCell.innerHTML === "") {
+          currentCell.innerHTML = mark;
+        }
+      }
+
+      //add every cell an onclick attribute and its value is addMark(this.id).
+      for (item of cellArray) {
+        //console.log('item: ', item);
+        item.setAttribute("onclick", "addMark(this.id)");
+      }
     </script>
+    <p>hello</p>
   </body>
 </html>
