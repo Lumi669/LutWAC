@@ -54,11 +54,10 @@
 
       //mark appears on the cell when it is clicked.
       var mark = "";
-      var count = 0;
+      var count = 1;
       var player;
 
       function play() {
-        count += 1;
         if (count % 2 === 1) {
           player = 1;
           mark = "O";
@@ -73,8 +72,11 @@
         play();
 
         var currentCell = document.getElementById(clickedId);
-        if (currentCell.innerHTML === "") {
+        if (currentCell.innerHTML !== "") {
+          return;
+        } else {
           currentCell.innerHTML = mark;
+          count += 1;
         }
       }
 
