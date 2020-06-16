@@ -25,65 +25,207 @@
     <table id="board"></table>
 
     <script>
-      var table = document.getElementById("board");
-      var cell;
 
-      //cellArray contains all the cells of board(all the td elements of table)
-      var cellArray = [];
+        var table = document.getElementById('board');
+        var cell;
 
-      //create an empty table
-      function tableCreate() {
-        for (var i = 0; i < 5; i++) {
-          var tr = document.createElement("tr");
-          for (var j = 0; j < 5; j++) {
-            cell = document.createElement("td");
-            var cellId = i.toString() + j.toString();
-            cell.id = cellId;
-            //cell.onclick=addMark;
 
-            cellArray.push(cell);
-            //console.log('cellID:', cell.id);
-            cell.appendChild(document.createTextNode(""));
-            tr.appendChild(cell);
-          }
-          table.appendChild(tr);
-        }
-      }
+        //cellArray contains all the cells of board(all the td elements of table)
+        var cellArray = [];
 
-      tableCreate();
+        //create an empty table
+        function tableCreate() {
+          for (var i = 0; i < 5; i++) {
+            var tr = document.createElement('tr');
+            for (var j = 0; j < 5; j++) {
+                cell = document.createElement('td');
+                var cellId=i.toString() + j.toString();
+
+                cell.id = Number(cellId);
+
+                cellArray.push(cell);
+                console.log('cellID:', cell.id);
+                cell.appendChild(document.createTextNode(''))
+                tr.appendChild(cell)
+              }
+              table.appendChild(tr);
+            }
+        };
+
+        tableCreate();
 
       //mark appears on the cell when it is clicked.
-      var mark = "";
-      var count = 1;
+      var mark = '';
+      var count=1;
       var player;
+      // var playerOneCollectedMarks = [];
+      // var playerTwoCollectedMarks = [];
 
-      function play() {
-        if (count % 2 === 1) {
+      function play(){
+
+        if (count%2 === 1){
           player = 1;
-          mark = "x";
-        } else if (count % 2 === 0) {
+          mark = 'x';
+
+        } else if (count%2 === 0){
           player = 2;
-          mark = "o";
+          mark = 'o';
         }
-        console.log("count:", count);
+        console.log('count:', count);
       }
 
-      function addMark(clickedId) {
+
+
+      function addMark(clickedId){
+
         play();
 
-        var currentCell = document.getElementById(clickedId);
-        if (currentCell.innerHTML !== "") {
-          return;
-        } else {
-          currentCell.innerHTML = mark;
-          count += 1;
+          var currentCell = document.getElementById(clickedId);
+          if (currentCell.innerHTML !== ''){
+            return;
+
+          } else{
+            currentCell.innerHTML = mark;
+
+            console.log('count = ', count);
+            console.log('player = ', player);
+            // if (isWin()){
+            //   alert("Player " + player + " won!");
+            //   removeOnclickAttribute();
+            //   return;
+            // } else{}
+            isWin();
+            count += 1;
+          }
+
+        }
+
+
+      function isWin(){
+        if (hasRowWithSameContents() || hasColumnWithSameContents() || hasDiagonalWithSameContents()){
+          var temp = "Player " + player + " won!"
+          setTimeout(function() { alert(temp); }, 1);
+          removeOnclickAttribute();
+          //clearBoard();
+          return true;
+        } else{
+          return false;
+        }
+      }
+
+
+      function clearBoard(){
+        for (item of cellArray){
+          item.innerHTML = '';
+        }
+      }
+      //
+      // clearBoard();
+
+
+      function hasRowWithSameContents(){
+        var rows = document.getElementById('board').rows;
+        var count = 0;
+        for (var row of rows){
+          console.log('current row = ', row);
+          if (isSameInOneRow(row)){
+            count += 1;
+          }
+        }
+        if (count > 0){
+          return true;
+        } else{
+          return false;
+        }
+      }
+
+
+      function hasColumnWithSameContents(){
+        var n = document.getElementById('board').rows[0].cells.length;
+
+        var count = 0;
+        for (var i = 0; i<n; i++){
+          if (isSameInOneColumn(i)){
+            count += 1;
+          }
+        }
+        if (count > 0){
+          return true;
+        } else{
+          return false;
+        }
+      }
+
+      function hasDiagonalWithSameContents(){
+        if (isSameInLeftDiagonal() || isSameInRightDiagonal()){
+          return true;
+        }
+        return false;
+      }
+
+
+      function isSameInLeftDiagonal(){
+        var rows = document.getElementById('board').rows;
+        var n = rows.length;
+        for (var i = 0; i < n - 1; i++){
+          if (!((rows[i].cells[4-i].innerHTML === 'x' && rows[i+1].cells[4-(i+1)].innerHTML === 'x')
+          || (rows[i].cells[4-i].innerHTML === 'o' && rows[i+1].cells[4-(i+1)].innerHTML === 'o'))){
+              return false;
+          }
+        }
+          return true;
+        }
+
+
+
+      function isSameInRightDiagonal(){
+        var rows = document.getElementById('board').rows;
+        var n = rows.length;
+        for (var i = 0; i < n - 1; i++){
+          if (!((rows[i].cells[i].innerHTML === 'x' && rows[i+1].cells[i+1].innerHTML === 'x')
+          || (rows[i].cells[i].innerHTML === 'o' && rows[i+1].cells[i+1].innerHTML === 'o'))){
+                return false;
+          }
+        }
+        return true;
+    }
+
+
+      function isSameInOneColumn(j){
+        var rows = document.getElementById('board').rows;
+
+        for (var i = 0; i < rows.length - 1; i++){
+            if (!((rows[i].cells[j].innerHTML === 'x' && rows[i+1].cells[j].innerHTML === 'x')
+            || (rows[i].cells[j].innerHTML === 'o' && rows[i+1].cells[j].innerHTML === 'o'))){
+              return false;
+            }
+          }
+            return true;
+      }
+
+
+      function isSameInOneRow(row){
+        var cells = row.cells;
+        //console.log('cells: ', cells);
+        for (var i=0; i < cells.length-1; i++){
+          if (!(((cells[i].innerHTML === 'x') && (cells[i+1].innerHTML === 'x'))
+          || (cells[i].innerHTML === 'o' && cells[i+1].innerHTML === 'o'))){
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function removeOnclickAttribute() {
+        for (item of cellArray){
+          item.removeAttribute("onclick");
         }
       }
 
       //add every cell an onclick attribute and its value is addMark(this.id).
-      for (item of cellArray) {
+      for (item of cellArray){
         //console.log('item: ', item);
-        item.setAttribute("onclick", "addMark(this.id)");
+        item.setAttribute('onclick', 'addMark(this.id)');
       }
     </script>
   </body>
