@@ -13,10 +13,13 @@
       td {
         border: 2px solid #000000;
         text-align: center;
+        vertical-align: center;
         padding: 3px;
+        font-family: Helvetica;
+        font-size: 30px;
 
-        height: 80px;
-        width: 80px;
+        height: 60px;
+        width: 60px;
       }
     </style>
   </head>
@@ -58,20 +61,24 @@
       var mark = '';
       var count=1;
       var player;
-      // var playerOneCollectedMarks = [];
-      // var playerTwoCollectedMarks = [];
+      var bgColor;
 
       function play(){
 
         if (count%2 === 1){
           player = 1;
           mark = 'x';
+          bgColor = 'rgb(124, 252, 0)';
 
         } else if (count%2 === 0){
           player = 2;
           mark = 'o';
+          bgColor = 'rgb(250, 128, 114)';
+
         }
+
         console.log('count:', count);
+        //addBackgroundColor();
       }
 
 
@@ -84,16 +91,13 @@
           if (currentCell.innerHTML !== ''){
             return;
 
-          } else{
+          } else {
             currentCell.innerHTML = mark;
+            currentCell.style.backgroundColor = bgColor;
 
             console.log('count = ', count);
             console.log('player = ', player);
-            // if (isWin()){
-            //   alert("Player " + player + " won!");
-            //   removeOnclickAttribute();
-            //   return;
-            // } else{}
+
             isWin();
             count += 1;
           }
@@ -124,7 +128,7 @@
 
 
       function hasRowWithSameContents(){
-        var rows = document.getElementById('board').rows;
+        var rows = table.rows;
         var count = 0;
         for (var row of rows){
           console.log('current row = ', row);
@@ -141,7 +145,7 @@
 
 
       function hasColumnWithSameContents(){
-        var n = document.getElementById('board').rows[0].cells.length;
+        var n = table.rows[0].cells.length;
 
         var count = 0;
         for (var i = 0; i<n; i++){
@@ -165,7 +169,7 @@
 
 
       function isSameInLeftDiagonal(){
-        var rows = document.getElementById('board').rows;
+        var rows = table.rows;
         var n = rows.length;
         for (var i = 0; i < n - 1; i++){
           if (!((rows[i].cells[4-i].innerHTML === 'x' && rows[i+1].cells[4-(i+1)].innerHTML === 'x')
@@ -179,7 +183,7 @@
 
 
       function isSameInRightDiagonal(){
-        var rows = document.getElementById('board').rows;
+        var rows = table.rows;
         var n = rows.length;
         for (var i = 0; i < n - 1; i++){
           if (!((rows[i].cells[i].innerHTML === 'x' && rows[i+1].cells[i+1].innerHTML === 'x')
@@ -192,7 +196,7 @@
 
 
       function isSameInOneColumn(j){
-        var rows = document.getElementById('board').rows;
+        var rows = table.rows;
 
         for (var i = 0; i < rows.length - 1; i++){
             if (!((rows[i].cells[j].innerHTML === 'x' && rows[i+1].cells[j].innerHTML === 'x')
