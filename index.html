@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Tic Tac Game</title>
     <style>
       table#board {
@@ -21,11 +22,17 @@
         height: 60px;
         width: 60px;
       }
+      caption {
+        font-size: 40px;
+      }
+
     </style>
   </head>
 
   <body>
-    <table id="board"></table>
+    <table id="board">
+      <caption></caption>
+    </table>
 
     <script>
 
@@ -47,7 +54,7 @@
                 cell.id = Number(cellId);
 
                 cellArray.push(cell);
-                console.log('cellID:', cell.id);
+                //console.log('cellID:', cell.id);
                 cell.appendChild(document.createTextNode(''))
                 tr.appendChild(cell)
               }
@@ -57,11 +64,13 @@
 
         tableCreate();
 
+
       //mark appears on the cell when it is clicked.
       var mark = '';
       var count=1;
       var player;
       var bgColor;
+
 
       function play(){
 
@@ -74,11 +83,8 @@
           player = 2;
           mark = 'o';
           bgColor = 'rgb(250, 128, 114)';
-
         }
-
         console.log('count:', count);
-        //addBackgroundColor();
       }
 
 
@@ -86,6 +92,10 @@
       function addMark(clickedId){
 
         play();
+
+        console.log('now player is: ', player);
+
+        //document.getElementsByTagName('caption')[0].innerHTML = "Player " + swithchPlayer() + " turn";
 
           var currentCell = document.getElementById(clickedId);
           if (currentCell.innerHTML !== ''){
@@ -99,10 +109,35 @@
             console.log('player = ', player);
 
             isWin();
+
             count += 1;
           }
+      }
 
-        }
+
+        //make progress bar fill fully in 10 senconds
+
+        // function startBar(){
+        //
+        //   var playTimerId = setInterval(function(){
+        //     if(timeleft <= 0){
+        //       clearInterval(playTimerId);
+        //       swithchPlayer();
+        //     }
+        //     document.getElementById("progressBar").value = 10 - timeleft;
+        //     timeleft -= 1;
+        //   }, 1000);
+        // }
+
+        // startBar();
+
+
+
+
+
+
+
+
 
 
       function isWin(){
@@ -110,28 +145,17 @@
           var temp = "Player " + player + " won!"
           setTimeout(function() { alert(temp); }, 1);
           removeOnclickAttribute();
-          //clearBoard();
           return true;
         } else{
           return false;
         }
       }
 
-
-      function clearBoard(){
-        for (item of cellArray){
-          item.innerHTML = '';
-        }
-      }
-      //
-      // clearBoard();
-
-
       function hasRowWithSameContents(){
         var rows = table.rows;
         var count = 0;
         for (var row of rows){
-          console.log('current row = ', row);
+          //console.log('current row = ', row);
           if (isSameInOneRow(row)){
             count += 1;
           }
@@ -231,6 +255,64 @@
         //console.log('item: ', item);
         item.setAttribute('onclick', 'addMark(this.id)');
       }
+
+
+      function createProgressBar(){
+        var body = document.getElementsByTagName('body')[0];
+        console.log('body: ', body);
+        var div = document.createElement('div');
+        var att = document.createAttribute("class");
+        att.value = "w3-container";
+        div.setAttributeNode(att);
+
+        var div1 = document.createElement('div');
+        var att1 = document.createAttribute("class");
+        att1.value = 'w3-light-grey w3-xlarge';
+        div1.setAttributeNode(att1);
+
+        var div2 = document.createElement('div');
+        div2.id = 'myBar';
+        var att2 = document.createAttribute('class');
+        att2.value = "w3-container w3-padding-large w3-red w3-center";
+        div2.setAttributeNode(att2);
+        div2.style.height = '60px';
+
+
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'Time remains';
+        h2.style = 'text-align:center';
+        div.appendChild(h2);
+
+        div1.appendChild(div2);
+        div.appendChild(div1);
+        body.appendChild(div);
+      }
+
+      createProgressBar();
+
+
+      function timeRemain() {
+        var timeleft = 10;
+        var elem = document.getElementById("myBar");
+        //elem.style.width = timeleft+ '%' ;
+        var width = 10;
+        var id = setInterval(frame, 1000);
+        function frame() {
+          if (timeleft < 0) {
+            clearInterval(id);
+          } else {
+            elem.style.width = (width-timeleft)*10 + '%';
+            elem.innerHTML = timeleft  + ' s';
+            console.log('width - timeleft = ', width - timeleft);
+            timeleft -= 1;
+          }
+        }
+      }
+
+      timeRemain();
+
     </script>
+
+
   </body>
 </html>
