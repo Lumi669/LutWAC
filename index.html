@@ -18,7 +18,7 @@
         padding: 3px;
         font-family: Helvetica;
         font-size: 30px;
-
+        /* because the boarder is 1px, if cell is 60px, then td is 59px */
         height: 59px;
         width: 59px;
       }
@@ -40,7 +40,7 @@
         var cell;
 
 
-        //cellArray contains all the cells of board(all the td elements of table)
+        //cellArray contains all the cells of board ( all the td elements of table)
         var cellArray = [];
 
         //create an empty table
@@ -52,7 +52,6 @@
                 var cellId=i.toString() + j.toString();
 
                 cell.id = Number(cellId);
-
                 cellArray.push(cell);
                 //console.log('cellID:', cell.id);
                 cell.appendChild(document.createTextNode(''))
@@ -71,9 +70,7 @@
       var player;
       var bgColor;
 
-
       function play(){
-
         if (count%2 === 1){
           player = 1;
           mark = 'x';
@@ -88,14 +85,12 @@
       }
 
 
-
       function addMark(clickedId){
-
+        //call function play
         play();
 
-        console.log('now player is: ', player);
-
-        //document.getElementsByTagName('caption')[0].innerHTML = "Player " + swithchPlayer() + " turn";
+        //console.log('now player is:;;;;;;; ', player);
+        document.getElementsByTagName('caption')[0].innerHTML = "Player " + displayPlayer() + " turn";
 
           var currentCell = document.getElementById(clickedId);
           if (currentCell.innerHTML !== ''){
@@ -114,6 +109,26 @@
           }
       }
 
+
+      // swith player, because it will be called to display next player's turn
+      function displayPlayer(){
+        if (player === 1){
+          player = 2;
+        } else if(player === 2){
+          player = 1;
+        }
+        return player;
+      }
+
+
+      //bool function isWin to see whether the condition meets win or not
+      //overall strategy:
+      // 1. check one individual row, check one individual column
+      // 2. check if there is one row full filled with same symble in board,
+      //    check if there is one row full filled with same symble in board.
+      // 3. check left diagonal, check right diagonal
+      // 4. check diagonal
+      // 5. finally the isWin function overall check row, column and diagnal.
       function isWin(){
         if (hasRowWithSameContents() || hasColumnWithSameContents() || hasDiagonalWithSameContents()){
           var temp = "Player " + player + " won!"
@@ -125,6 +140,7 @@
         }
       }
 
+      //bool function to see whether there is one row with all cells filled with 'x' or 'o'
       function hasRowWithSameContents(){
         var rows = table.rows;
         var count = 0;
@@ -142,6 +158,7 @@
       }
 
 
+      ////bool function to see whether there is one column with all cells filled with 'x' or 'o'
       function hasColumnWithSameContents(){
         var n = table.rows[0].cells.length;
 
@@ -158,6 +175,8 @@
         }
       }
 
+
+      //bool function to see whether there is diagonal with all cells filled with 'x' or 'o'
       function hasDiagonalWithSameContents(){
         if (isSameInLeftDiagonal() || isSameInRightDiagonal()){
           return true;
@@ -166,6 +185,7 @@
       }
 
 
+      //bool function to check whether the left oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInLeftDiagonal(){
         var rows = table.rows;
         var n = rows.length;
@@ -178,8 +198,7 @@
           return true;
         }
 
-
-
+        //bool function to check whether the right oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInRightDiagonal(){
         var rows = table.rows;
         var n = rows.length;
@@ -193,6 +212,7 @@
     }
 
 
+      //bool function to check whether one individual column with all cells filled with 'x' or 'o'
       function isSameInOneColumn(j){
         var rows = table.rows;
 
@@ -206,6 +226,7 @@
       }
 
 
+      //bool function to check whether one individual row with all cells filled with 'x' or 'o'
       function isSameInOneRow(row){
         var cells = row.cells;
         //console.log('cells: ', cells);
@@ -218,22 +239,25 @@
         return true;
       }
 
+      //to inactivate the clicking on cells
       function removeOnclickAttribute() {
         for (item of cellArray){
           item.removeAttribute("onclick");
         }
       }
 
-      //add every cell an onclick attribute and its value is addMark(this.id).
+
+      //add every cell an onclick attribute and its value are addMark(this.id and timeLeft()).
       for (item of cellArray){
         //console.log('item: ', item);
-        item.setAttribute('onclick', 'addMark(this.id)');
+        item.setAttribute('onclick', 'addMark(this.id); timeLeft()');
+
       }
 
 
       function createProgressBar(){
         var body = document.getElementsByTagName('body')[0];
-        console.log('body: ', body);
+        //console.log('body: ', body);
         var div = document.createElement('div');
         var att = document.createAttribute("class");
         att.value = "w3-container";
@@ -251,7 +275,6 @@
         div2.setAttributeNode(att2);
         div2.style.height = '60px';
 
-
         var h2 = document.createElement('h2');
         h2.innerHTML = 'Time remains';
         h2.style = 'text-align:center';
@@ -262,31 +285,43 @@
         body.appendChild(div);
       }
 
+      // call function createProgressBar
       createProgressBar();
 
 
-      function timeRemain() {
-        var timeleft = 10;
+      //make progress bar dynamic and connect to game
+      var timeleft;
+      var timerId = null; // because below will examin timerId, it is good to let it be null for safety
+
+      function timeLeft() {
+        timeleft = 10;
         var elem = document.getElementById("myBar");
-        //elem.style.width = timeleft+ '%' ;
         var width = 10;
-        var id = setInterval(frame, 1000);
+
+        //progress bar filling progress restart
+        if (timerId){
+          clearInterval(timerId);
+        }
+
+        timerId = setInterval(frame, 1000);
         function frame() {
           if (timeleft < 0) {
-            clearInterval(id);
+            clearInterval(timerId);
+
+            // if runout of time, change player
+            count += 1;
+
           } else {
+
             elem.style.width = (width-timeleft)*10 + '%';
             elem.innerHTML = timeleft  + ' s';
-            console.log('width - timeleft = ', width - timeleft);
             timeleft -= 1;
+
           }
         }
       }
 
-      timeRemain();
 
     </script>
-
-
   </body>
 </html>
