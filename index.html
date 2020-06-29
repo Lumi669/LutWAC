@@ -22,13 +22,11 @@
     <title>Tic Tac Game</title>
     <style>
       #board {
-        border: 1px solid black;
-        border-collapse: collapse;
         margin-left: auto;
         margin-right: auto;
       }
       .col {
-        border: 2px solid #000000;
+        border: 1px solid #000000;
         text-align: center;
         vertical-align: center;
         padding: 3px;
@@ -38,89 +36,98 @@
         height: 59px;
         width: 59px;
       }
-      caption {
-        font-size: 40px;
+      captio {
+        font-size: 30px;
+        text-align: center;
+        color: black;
+        background-color: green
+
       }
 
-     .row{
-      clear: both;
-      height: 0; 
-     } 
+      .row {
+        clear: both;
+        height: 0;
+      }
+      .progress {
+        top: 15px;
+        height: 30px;
+      }
+      #myBar{
+        background-color: red;
+      }
     </style>
   </head>
 
   <body>
-    <grid id="board">
-      <caption></caption>
 
-    <div class="container" >
+    <div class="container">
+      <captio></captio>
+    </div>
+
+
+    <div class="container" id="board">
+
       <div class="row">
-        <div class="col s2.4"></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
+        <div class="col s2.4" id="0"></div>
+        <div class="col s2.4" id="1"></div>
+        <div class="col s2.4" id="2"></div>
+        <div class="col s2.4" id="3"></div>
+        <div class="col s2.4" id="4"></div>
       </div>
       <div class="row">
-        <div class="col s2.4" ></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
+        <div class="col s2.4" id="10"></div>
+        <div class="col s2.4" id="11"></div>
+        <div class="col s2.4" id="12"></div>
+        <div class="col s2.4" id="13"></div>
+        <div class="col s2.4" id="14"></div>
       </div>
       <div class="row">
-        <div class="col s2.4" ></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
+        <div class="col s2.4" id="20"></div>
+        <div class="col s2.4" id="21"></div>
+        <div class="col s2.4" id="22"></div>
+        <div class="col s2.4" id="23"></div>
+        <div class="col s2.4" id="24"></div>
       </div>
       <div class="row">
-        <div class="col s2.4"></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4> </div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
+        <div class="col s2.4" id="30"></div>
+        <div class="col s2.4" id="31"></div>
+        <div class="col s2.4" id="32"></div>
+        <div class="col s2.4" id="33"></div>
+        <div class="col s2.4" id="34"></div>
       </div>
       <div class="row">
-        <div class="col s2.4" ></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
-        <div class="col" s2.4></div>
+        <div class="col s2.4" id="40"></div>
+        <div class="col s2.4" id="41"></div>
+        <div class="col s2.4" id="42"></div>
+        <div class="col s2.4" id="43"></div>
+        <div class="col s2.4" id="44"></div>
       </div>
     </div>
-  </table>
 
-
-
+    <div class="container">
+      <div class="progress">
+        <div class="determinate" id="myBar" style="width=0"></div>
+      </div>
+    </div>
 
     <script>
-      var grid = document.getElementById("board");
-      var cell;
 
+      var grid = document.getElementById("board");
+
+      var rows = document.getElementsByClassName("row");
+      // console.log('rows[0].children = ', rows[0].children);
+      // console.log('rows[0].children[0] = ', rows[0].children[0]);
+
+      var cols = document.getElementsByClassName("col");
       //cellArray contains all the cells of board ( all the td elements of table)
       var cellArray = [];
 
-      //create an empty table
-      // function tableCreate() {
-      //   for (var i = 0; i < 5; i++) {
-      //     var tr = document.createElement("tr");
-      //     for (var j = 0; j < 5; j++) {
-      //       cell = document.createElement("td");
-      //       var cellId = i.toString() + j.toString();
+      // Add each of col object into cellArray data structure
+      for (var col of cols){
+        //console.log('col = ', col);
+        cellArray.push(col);
+      }
 
-      //       cell.id = Number(cellId);
-      //       cellArray.push(cell);
-      //       //console.log('cellID:', cell.id);
-      //       cell.appendChild(document.createTextNode(""));
-      //       tr.appendChild(cell);
-      //     }
-      //     table.appendChild(tr);
-      //   }
-      // }
-
-      // tableCreate();
 
       //mark appears on the cell when it is clicked.
       var mark = "";
@@ -146,7 +153,7 @@
         play();
 
         //console.log('now player is:;;;;;;; ', player);
-        document.getElementsByTagName("caption")[0].innerHTML =
+        document.getElementsByTagName("captio")[0].innerHTML =
           "Player " + displayPlayer() + " turn";
 
         var currentCell = document.getElementById(clickedId);
@@ -156,8 +163,8 @@
           currentCell.innerHTML = mark;
           currentCell.style.backgroundColor = bgColor;
 
-          console.log("count = ", count);
-          console.log("player = ", player);
+          // console.log("count = ", count);
+          // console.log("player = ", player);
 
           isWin();
 
@@ -202,10 +209,9 @@
 
       //bool function to see whether there is one row with all cells filled with 'x' or 'o'
       function hasRowWithSameContents() {
-        var rows = table.rows;
+
         var count = 0;
         for (var row of rows) {
-          //console.log('current row = ', row);
           if (isSameInOneRow(row)) {
             count += 1;
           }
@@ -217,9 +223,9 @@
         }
       }
 
-      ////bool function to see whether there is one column with all cells filled with 'x' or 'o'
+      //bool function to see whether there is one column with all cells filled with 'x' or 'o'
       function hasColumnWithSameContents() {
-        var n = table.rows[0].cells.length;
+        var n = rows[0].children.length;
 
         var count = 0;
         for (var i = 0; i < n; i++) {
@@ -244,15 +250,15 @@
 
       //bool function to check whether the left oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInLeftDiagonal() {
-        var rows = table.rows;
+
         var n = rows.length;
         for (var i = 0; i < n - 1; i++) {
           if (
             !(
-              (rows[i].cells[4 - i].innerHTML === "x" &&
-                rows[i + 1].cells[4 - (i + 1)].innerHTML === "x") ||
-              (rows[i].cells[4 - i].innerHTML === "o" &&
-                rows[i + 1].cells[4 - (i + 1)].innerHTML === "o")
+              (rows[i].children[4 - i].innerHTML === "x" &&
+                rows[i + 1].children[4 - (i + 1)].innerHTML === "x") ||
+              (rows[i].children[4 - i].innerHTML === "o" &&
+                rows[i + 1].children[4 - (i + 1)].innerHTML === "o")
             )
           ) {
             return false;
@@ -263,15 +269,15 @@
 
       //bool function to check whether the right oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInRightDiagonal() {
-        var rows = table.rows;
+
         var n = rows.length;
         for (var i = 0; i < n - 1; i++) {
           if (
             !(
-              (rows[i].cells[i].innerHTML === "x" &&
-                rows[i + 1].cells[i + 1].innerHTML === "x") ||
-              (rows[i].cells[i].innerHTML === "o" &&
-                rows[i + 1].cells[i + 1].innerHTML === "o")
+              (rows[i].children[i].innerHTML === "x" &&
+                rows[i + 1].children[i + 1].innerHTML === "x") ||
+              (rows[i].children[i].innerHTML === "o" &&
+                rows[i + 1].children[i + 1].innerHTML === "o")
             )
           ) {
             return false;
@@ -282,15 +288,14 @@
 
       //bool function to check whether one individual column with all cells filled with 'x' or 'o'
       function isSameInOneColumn(j) {
-        var rows = table.rows;
 
         for (var i = 0; i < rows.length - 1; i++) {
           if (
             !(
-              (rows[i].cells[j].innerHTML === "x" &&
-                rows[i + 1].cells[j].innerHTML === "x") ||
-              (rows[i].cells[j].innerHTML === "o" &&
-                rows[i + 1].cells[j].innerHTML === "o")
+              (rows[i].children[j].innerHTML === "x" &&
+                rows[i + 1].children[j].innerHTML === "x") ||
+              (rows[i].children[j].innerHTML === "o" &&
+                rows[i + 1].children[j].innerHTML === "o")
             )
           ) {
             return false;
@@ -301,8 +306,7 @@
 
       //bool function to check whether one individual row with all cells filled with 'x' or 'o'
       function isSameInOneRow(row) {
-        var cells = row.cells;
-        //console.log('cells: ', cells);
+        var cells = row.children;
         for (var i = 0; i < cells.length - 1; i++) {
           if (
             !(
@@ -325,42 +329,9 @@
 
       //add every cell an onclick attribute and its value are addMark(this.id and timeLeft()).
       for (item of cellArray) {
-        //console.log('item: ', item);
         item.setAttribute("onclick", "addMark(this.id); timeLeft()");
       }
 
-      function createProgressBar() {
-        var body = document.getElementsByTagName("body")[0];
-        //console.log('body: ', body);
-        var div = document.createElement("div");
-        var att = document.createAttribute("class");
-        att.value = "w3-container";
-        div.setAttributeNode(att);
-
-        var div1 = document.createElement("div");
-        var att1 = document.createAttribute("class");
-        att1.value = "w3-light-grey w3-xlarge";
-        div1.setAttributeNode(att1);
-
-        var div2 = document.createElement("div");
-        div2.id = "myBar";
-        var att2 = document.createAttribute("class");
-        att2.value = "w3-container w3-padding-large w3-red w3-center";
-        div2.setAttributeNode(att2);
-        div2.style.height = "60px";
-
-        var h2 = document.createElement("h2");
-        h2.innerHTML = "Time remains";
-        h2.style = "text-align:center";
-        div.appendChild(h2);
-
-        div1.appendChild(div2);
-        div.appendChild(div1);
-        body.appendChild(div);
-      }
-
-      // call function createProgressBar
-      createProgressBar();
 
       //make progress bar dynamic and connect to game
       var timeleft;
@@ -392,7 +363,6 @@
       }
     </script>
     <!--JavaScript at end of body for optimized loading-->
-    <script type="text/javascript" src="js/materialize.min.js"></script
-    >1
+    <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
 </html>
