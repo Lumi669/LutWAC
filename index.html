@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <!--Import Google Icon Font-->
+    <h3>TIC TAC TOE GAME</h3>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -41,7 +42,6 @@
         text-align: center;
         color: black;
         background-color: green;
-
       }
 
       .row {
@@ -52,21 +52,18 @@
         top: 15px;
         height: 30px;
       }
-      #myBar{
+      #myBar {
         background-color: red;
       }
     </style>
   </head>
 
   <body>
-
     <div class="container">
       <captio></captio>
     </div>
 
-
     <div class="container" id="board">
-
       <div class="row">
         <div class="col s2.4" id="0"></div>
         <div class="col s2.4" id="1"></div>
@@ -111,7 +108,6 @@
     </div>
 
     <script>
-
       var grid = document.getElementById("board");
 
       var rows = document.getElementsByClassName("row");
@@ -123,11 +119,10 @@
       var cellArray = [];
 
       // Add each of col object into cellArray data structure
-      for (var col of cols){
+      for (var col of cols) {
         //console.log('col = ', col);
         cellArray.push(col);
       }
-
 
       //mark appears on the cell when it is clicked.
       var mark = "";
@@ -209,7 +204,6 @@
 
       //bool function to see whether there is one row with all cells filled with 'x' or 'o'
       function hasRowWithSameContents() {
-
         var count = 0;
         for (var row of rows) {
           if (isSameInOneRow(row)) {
@@ -250,7 +244,6 @@
 
       //bool function to check whether the left oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInLeftDiagonal() {
-
         var n = rows.length;
         for (var i = 0; i < n - 1; i++) {
           if (
@@ -269,7 +262,6 @@
 
       //bool function to check whether the right oriented diagonal with all cells filled with 'x' or 'o'
       function isSameInRightDiagonal() {
-
         var n = rows.length;
         for (var i = 0; i < n - 1; i++) {
           if (
@@ -288,7 +280,6 @@
 
       //bool function to check whether one individual column with all cells filled with 'x' or 'o'
       function isSameInOneColumn(j) {
-
         for (var i = 0; i < rows.length - 1; i++) {
           if (
             !(
@@ -331,7 +322,6 @@
       for (item of cellArray) {
         item.setAttribute("onclick", "addMark(this.id); timeLeft()");
       }
-
 
       //make progress bar dynamic and connect to game
       var timeleft;
