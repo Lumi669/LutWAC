@@ -3,8 +3,8 @@
 
 {
   "scripts": {
-    "start": "./node_modules/parcel-bundler/bin/cli.js index.html --port 8080",
-    "build": "parcel build index.html --no-minify"
+    "start": "./node_modules/parcel-bundler/bin/cli.js index.html --port 8080"
+    
   },
 
   "name": "web-develop-course-lut",
