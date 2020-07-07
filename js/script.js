@@ -1,4 +1,4 @@
-var grid = document.getElementById("board");
+//var grid = document.getElementById("board");
 
 var rows = document.getElementsByClassName("row");
 // console.log('rows[0].children = ', rows[0].children);
@@ -92,9 +92,9 @@ function isWin() {
   }
 }
 
-function dummy() {
-  //do nothing
-}
+// function dummy() {
+//   //do nothing
+// }
 
 //bool function to see whether there is one row with all cells filled with 'x' or 'o'
 function hasRowWithSameContents() {
